@@ -9,24 +9,24 @@ MENTION_REGEX = "^<@(|[WU].+?)>(.*)"
 acceptable_commands = ["upload"]
 
 def upload_file(filename, options):
-    skylink = "https://siasky.net/" + upload_file_request(filename, options).json()["skylink"]
+    skylink = "https://siasky.net/" + post_upload_file(filename, options).json()["skylink"]
     return skylink
 
-def upload_file_request(filename, opts=None):
-    if opts is None:
-        opts = Skynet.default_upload_options()
+def post_upload_file(filename):
+    options = Skynet.default_upload_options()
 
-    host = opts.portal_url
-    path = opts.portal_upload_path
+    host = options.portal_url
+    path = options.portal_upload_path
     url = f'{host}/{path}'
 
     res = requests.get(filename)
-    filename = opts.custom_filename if opts.custom_filename else os.path.basename(filename.split("/")[-1])
+    filename = filename.split("/")[-1]
     f = open(filename, "w+")
     f.write(res.text)
     f.close()
     f = open(filename, "rb")
-    r = requests.post(url, files={opts.portal_file_fieldname: (filename, f)})
+    r = requests.post(url, files={options.portal_file_fieldname: (filename, f)})
+    f.close()
     return r
 
 @RTMClient.run_on(event="message")
