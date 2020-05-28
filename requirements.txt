@@ -1,2 +1,3 @@
-slackclient
+requests
 siaskynet
+slackclient
