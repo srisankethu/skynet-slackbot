@@ -1,6 +1,5 @@
 from slack import RTMClient
 from siaskynet import Skynet
-import asyncio
 import os
 import re
 import requests
@@ -62,6 +61,7 @@ def handle_message(**payload):
 
         #res = requests.get('https://slack.com/api/files.list', files_options)
         #print(res.text)
+        
         res = requests.get(files[0][1:-1])
 
         if command in acceptable_commands:
